@@ -30,6 +30,11 @@ export function Home() {
       name: newSkill,
     };
     setMySkills((oldState) => [...oldState, data]);
+    setNewSkill('');
+  }
+
+  function handdleRemoveSkill(id: string) {
+    setMySkills((oldState) => oldState.filter((skill) => skill.id !== id));
   }
 
   useEffect(() => {
@@ -54,9 +59,10 @@ export function Home() {
         placeholder="Novas Habilidades"
         placeholderTextColor="#555"
         onChangeText={setNewSkill}
+        value={newSkill}
       />
 
-      <Button onPress={handleAddNewSkill} />
+      <Button title="Adcicionar" onPress={handleAddNewSkill} />
 
       <Text style={[styles.title, { marginVertical: 20 }]}>
         Minhas Habilidades
@@ -65,7 +71,12 @@ export function Home() {
       <FlatList
         data={mySkills}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <SkillCard key={item.id} skill={item.name} />}
+        renderItem={({ item }) => (
+          <SkillCard
+            skill={item.name}
+            onPress={() => handdleRemoveSkill(item.id)}
+          />
+        )}
       />
     </View>
   );
