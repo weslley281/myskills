@@ -6,12 +6,16 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
+  ScrollView,
+  FlatList,
 } from 'react-native';
 import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCard';
 
 export function Home() {
-  const [newSkill, setnewSkill] = useState('');
+  //é alterado dinamicamente no onChange
+  const [newSkill, setNewSkill] = useState('');
+  //é o repositóro
   const [mySkills, setMySkills] = useState([]);
 
   function handleAddNewSkill() {
@@ -25,7 +29,7 @@ export function Home() {
         style={styles.input}
         placeholder="Novas Habilidades"
         placeholderTextColor="#555"
-        onChangeText={setnewSkill}
+        onChangeText={setNewSkill}
       />
 
       <Button onPress={handleAddNewSkill} />
@@ -34,9 +38,11 @@ export function Home() {
         Minhas Habilidades
       </Text>
 
-      {mySkills.map((skill) => (
-        <SkillCard />
-      ))}
+      <FlatList
+        data={mySkills}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => <SkillCard key={item} skill={item} />}
+      />
     </View>
   );
 }
